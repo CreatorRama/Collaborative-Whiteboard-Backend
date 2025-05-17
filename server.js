@@ -2,7 +2,22 @@ const WebSocket = require('ws');
 const { v4: uuidv4 } = require('uuid');
 
 const PORT = process.env.PORT || 8080;
- const wss = new WebSocket.Server({ port: PORT });
+ const wss = new WebSocket.Server({ port: PORT,
+   verifyClient: (info, done) => {
+     
+     const allowedOrigins = [
+       'https://whiteboard-frontend-md5zbwoym-creatorramas-projects.vercel.app', 
+       'http://localhost:5173'             
+     ];
+     
+     if (!info.origin || allowedOrigins.includes(info.origin)) {
+       done(true); 
+     } else {
+       console.log('Blocked origin:', info.origin);
+       done(false, 401, 'Unauthorized'); 
+     }
+   } 
+  });
 const clients = new Map(); // Store client information
 const drawingHistory = []; // Store all drawing actions
 const MAX_HISTORY = 100; // Limit history size
