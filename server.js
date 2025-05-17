@@ -30,9 +30,7 @@ const wss = new WebSocket.Server({
     console.log('Connection attempt from origin:', info.origin);
     
     const allowedOrigins = [
-      'https://whiteboard-frontend-one.vercel.app',
-      'https://whiteboard-frontend-p869xbkv7-creatorramas-projects.vercel.app',
-      'https://whiteboard-frontend-md5zbwoym-creatorramas-projects.vercel.app', 
+      'https://whiteboard-frontend-bsegpfj38-creatorramas-projects.vercel.app', 
       'http://localhost:5173',
       // Allow connections with no origin (like from Postman or direct connections)
       undefined
