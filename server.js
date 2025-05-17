@@ -2,22 +2,25 @@ const WebSocket = require('ws');
 const { v4: uuidv4 } = require('uuid');
 
 const PORT = process.env.PORT || 8080;
- const wss = new WebSocket.Server({ port: PORT,
-   verifyClient: (info, done) => {
+
+// Create the WebSocket server with proper configuration for hosting environments
+const wss = new WebSocket.Server({ 
+  port: PORT,
+  verifyClient: (info, done) => {
+    const allowedOrigins = [
+      'https://whiteboard-frontend-md5zbwoym-creatorramas-projects.vercel.app', 
+      'http://localhost:5173'             
+    ];
      
-     const allowedOrigins = [
-       'https://whiteboard-frontend-md5zbwoym-creatorramas-projects.vercel.app', 
-       'http://localhost:5173'             
-     ];
-     
-     if (!info.origin || allowedOrigins.includes(info.origin)) {
-       done(true); 
-     } else {
-       console.log('Blocked origin:', info.origin);
-       done(false, 401, 'Unauthorized'); 
-     }
-   } 
-  });
+    if (!info.origin || allowedOrigins.includes(info.origin)) {
+      done(true); 
+    } else {
+      console.log('Blocked origin:', info.origin);
+      done(false, 401, 'Unauthorized'); 
+    }
+  }
+});
+
 const clients = new Map(); // Store client information
 const drawingHistory = []; // Store all drawing actions
 const MAX_HISTORY = 100; // Limit history size
@@ -84,4 +87,6 @@ wss.on('connection', (ws) => {
   });
 });
 
-console.log('WebSocket server running on ws://localhost:8080');
+// Log the actual public URL instead of localhost
+console.log(`WebSocket server running on port ${PORT}`);
+console.log('For secure connections use: wss://collaborative-whiteboard-backend-n4qk.onrender.com');
